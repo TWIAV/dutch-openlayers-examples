@@ -59,13 +59,13 @@ html, body {
 .ol-popup:after {
   border-top-color: white;
   border-width: 10px;
-  left: 30px;
+  left: 48px;
   margin-left: -10px;
 }
 .ol-popup:before {
   border-top-color: #cccccc;
   border-width: 11px;
-  left: 30px;
+  left: 48px;
   margin-left: -11px;
 }
 .ol-popup-closer {
