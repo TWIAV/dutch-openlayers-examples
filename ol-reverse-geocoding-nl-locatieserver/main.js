@@ -14,7 +14,7 @@ const content = document.getElementById('popup-content');
 const closer = document.getElementById('popup-closer');
 
 // Create an overlay to anchor the popup to the map.
-const overlay = new Overlay({
+const addressPopup = new Overlay({
   element: container,
   autoPan: true,
   autoPanAnimation: {
@@ -25,7 +25,7 @@ const overlay = new Overlay({
 // Add a click handler to hide the popup.
 // @return {boolean} Don't follow the href.
 closer.onclick = function () {
-  overlay.setPosition(undefined);
+  addressPopup.setPosition(undefined);
   closer.blur();
   return false;
 };
@@ -67,7 +67,7 @@ const map = new Map({
     openTopoLayer
   ],
   controls: defaultControls({attribution: false}).extend([attribution]),
-  overlays: [overlay],
+  overlays: [addressPopup],
   target: 'map',
   view: new View({
     minZoom: 0,
@@ -94,6 +94,6 @@ map.on('singleclick', function (evt) {
 	} else {
 	  content.innerHTML += '<p><b>Adress:</b><br>' + json.response.docs[0].weergavenaam + '</p>';
 	}
-	overlay.setPosition(coordinates);
+	addressPopup.setPosition(coordinates);
   })
 });
