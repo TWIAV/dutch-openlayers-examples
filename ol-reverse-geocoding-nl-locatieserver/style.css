@@ -77,7 +77,7 @@ html, body {
 .ol-popup-closer:after {
   content: "✖";
 }
-#instruction {
+.ol-instruction-label {
   position: absolute;
   bottom: .5em;
   left: .5em;
@@ -90,8 +90,7 @@ html, body {
   font-size: .8em;
 }
 #gh-a {
-  position: absolute;
-  right    : 1em;
-  top  : 1.5em;
-  z-index : 100;
+  float: right;
+  margin-top: 17.5px;
+  padding-right: 15px;
 }

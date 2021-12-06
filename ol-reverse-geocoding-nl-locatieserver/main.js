@@ -6,7 +6,12 @@ import WMTSSource from 'ol/source/WMTS';
 import WMTSTileGrid from 'ol/tilegrid/WMTS';
 import Projection from 'ol/proj/Projection';
 import { getTopLeft } from 'ol/extent';
+import Control from 'ol/control/Control';
 import {Attribution, defaults as defaultControls} from 'ol/control';
+
+const instructionDiv = document.getElementById('instruction');
+
+const instructionLabel = new Control({element: instructionDiv});
 
 // Elements that make up the popup.
 const container = document.getElementById('popup');
@@ -97,3 +102,5 @@ map.on('singleclick', function (evt) {
 	addressPopup.setPosition(coordinates);
   })
 });
+
+map.addControl(instructionLabel);
