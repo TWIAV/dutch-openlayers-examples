@@ -9,9 +9,52 @@ import { getTopLeft } from 'ol/extent';
 import Control from 'ol/control/Control';
 import {Attribution, defaults as defaultControls} from 'ol/control';
 
-const instructionDiv = document.getElementById('instruction');
+// Awesome :-)
+import '@fortawesome/fontawesome-free/js/all.js';
 
-const instructionLabel = new Control({element: instructionDiv});
+let reverseGeocoding = false;
+
+// Define reverse geocoding control
+class revGeoControl extends Control {
+  /**
+   * @param {Object} [opt_options] Control options.
+   */
+  constructor(opt_options) {
+    const options = opt_options || {};
+
+    const button = document.createElement('button');
+    button.innerHTML = '<i class=\'fas fa-highlighter\'></i>';
+	button.id = 'revGeoButton';
+
+    const element = document.createElement('div');
+    element.className = 'rev-geo ol-unselectable ol-control';
+	element.title = 'Click map to get address';
+    element.appendChild(button);
+
+    super({
+      element: element,
+      target: options.target,
+    });
+
+    button.addEventListener('click', this.handleCopyUrl.bind(this), false);
+  }
+
+  handleCopyUrl() {
+	const button = document.getElementById('revGeoButton');
+    if (reverseGeocoding) {
+      button.style.color = 'white';
+	  button.style.backgroundColor = 'rgba(0,60,136,0.5)';
+	  map.getViewport().style.cursor = 'auto';
+      addressPopup.setPosition(undefined);
+	  reverseGeocoding = false;
+	} else {
+      button.style.color = 'rgba(0,60,136,0.5)';
+	  button.style.backgroundColor = 'white';
+      reverseGeocoding = true;
+	  map.getViewport().style.cursor = 'crosshair';
+	}
+  }
+}
 
 // Elements that make up the popup.
 const container = document.getElementById('popup');
@@ -71,7 +114,7 @@ const map = new Map({
   layers: [
     openTopoLayer
   ],
-  controls: defaultControls({attribution: false}).extend([attribution]),
+  controls: defaultControls({attribution: false}).extend([new revGeoControl(), attribution]),
   overlays: [addressPopup],
   target: 'map',
   view: new View({
@@ -85,22 +128,48 @@ const map = new Map({
 
 // Add a click handler to the map to render the popup.
 map.on('singleclick', function (evt) {
-  const coordinates = evt.coordinate;
-  const rdX = Math.round(coordinates[0]);
-  const rdY = Math.round(coordinates[1]);
-  
-  content.innerHTML = '<p><b>Coordinates (RD/EPSG:28992):</b><br>X = ' + rdX + ' / Y = ' + rdY + '</p>';
+  if (reverseGeocoding) { // Only retrieve address when revGeoButton is activated
+    const coordinates = evt.coordinate;
+    const rdX = Math.round(coordinates[0]);
+    const rdY = Math.round(coordinates[1]);
+    
+    content.innerHTML = '<p><b>Coordinates (RD/EPSG:28992):</b><br>X = ' + rdX + ' / Y = ' + rdY + '</p>';
 
-  fetch('https://geodata.nationaalgeoregister.nl/locatieserver/revgeo?X=' + rdX + '&Y=' + rdY + '&type=adres&distance=20').then(function(response) {
-    return response.json();
-  }).then(function(json) {
-	if (json.response.numFound === 0) {
-	  content.innerHTML += '<p><b>Adress:</b><br>No address found at this location</p>';
-	} else {
-	  content.innerHTML += '<p><b>Adress:</b><br>' + json.response.docs[0].weergavenaam + '</p>';
-	}
-	addressPopup.setPosition(coordinates);
-  })
+    fetch('https://geodata.nationaalgeoregister.nl/locatieserver/revgeo?X=' + rdX + '&Y=' + rdY + '&type=adres&distance=20').then(function(response) {
+      return response.json();
+    }).then(function(json) {
+      if (json.response.numFound === 0) {
+        content.innerHTML += '<p><b>Adress:</b><br>No address found at this location</p>';
+      } else {
+        content.innerHTML += '<p><b>Adress:</b><br>' + json.response.docs[0].weergavenaam + '</p>';
+      }
+      addressPopup.setPosition(coordinates);
+    })
+  }
 });
 
-map.addControl(instructionLabel);
+const instructionDiv = document.createElement('div');
+instructionDiv.className = 'ol-instruction-label';
+instructionDiv.id = 'instruction';
+instructionDiv.innerHTML = '<h3>Instructions</h3><a href="#" id="instructions-closer" class="ol-popup-closer"></a>'
+                         + '<p>Click the highlighter button <button style="background-color:rgba(0,60,136,0.5);border:white">'
+                         + '<i class=\'fas fa-highlighter\' style="color:white"></i></button> above to activate the <b>reverse geocoding</b> functionality.</p>'
+                         + '<p>Once activated <button style="background-color:white;border:white">'
+                         + '<i class=\'fas fa-highlighter\' style="color:rgba(0,60,136,0.5)"></i></button> the cursor will change into a crosshair,'
+						 + ' allowing you to click the map to get an address.</p>'
+						 + '<p>Adresses are retrieved usint the <a href="https://geodata.nationaalgeoregister.nl/locatieserver/revgeo?X=155000&Y=463000&type=adres&distance=20" target="_blank">'
+						 + 'Dutch \'Locatieserver\'</a>.</p>';
+
+const instructions = new Control({element: instructionDiv});
+
+map.addControl(instructions);
+
+const closeInstructions = document.getElementById('instructions-closer');
+
+// Add a click handler to remove the Instructions.
+// @return {boolean} Don't follow the href.
+closeInstructions.onclick = function () {
+  map.removeControl(instructions);
+  closer.blur();
+  return false;
+};
