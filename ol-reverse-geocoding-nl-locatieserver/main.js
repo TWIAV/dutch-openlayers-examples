@@ -170,6 +170,6 @@ const closeInstructions = document.getElementById('instructions-closer');
 // @return {boolean} Don't follow the href.
 closeInstructions.onclick = function () {
   map.removeControl(instructions);
-  closer.blur();
+  closeInstructions.blur();
   return false;
 };
