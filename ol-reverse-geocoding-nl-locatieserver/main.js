@@ -23,7 +23,7 @@ class revGeoControl extends Control {
     const options = opt_options || {};
 
     const button = document.createElement('button');
-    button.innerHTML = '<i class=\'fas fa-highlighter\'></i>';
+    button.innerHTML = '<i class=\'fas fas fa-flag-checkered\'></i>';
 	button.id = 'revGeoButton';
 
     const element = document.createElement('div');
@@ -152,10 +152,10 @@ const instructionDiv = document.createElement('div');
 instructionDiv.className = 'ol-instruction-label';
 instructionDiv.id = 'instruction';
 instructionDiv.innerHTML = '<h3>Instructions</h3><a href="#" id="instructions-closer" class="ol-popup-closer"></a>'
-                         + '<p>Click the highlighter button <button style="background-color:rgba(0,60,136,0.5);border:white">'
-                         + '<i class=\'fas fa-highlighter\' style="color:white"></i></button> above to activate the <b>reverse geocoding</b> functionality.</p>'
+                         + '<p>Click the flag button <button style="background-color:rgba(0,60,136,0.5);border:white">'
+                         + '<i class=\'fas fas fa-flag-checkered\' style="color:white"></i></button> above to activate the <b>reverse geocoding</b> functionality.</p>'
                          + '<p>Once activated <button style="background-color:white;border:white">'
-                         + '<i class=\'fas fa-highlighter\' style="color:rgba(0,60,136,0.5)"></i></button> the cursor will change into a crosshair,'
+                         + '<i class=\'fas fas fa-flag-checkered\' style="color:rgba(0,60,136,0.5)"></i></button> the cursor will change into a crosshair,'
 						 + ' allowing you to click the map to get an address.</p>'
 						 + '<p>Adresses are retrieved usint the <a href="https://geodata.nationaalgeoregister.nl/locatieserver/revgeo?X=155000&Y=463000&type=adres&distance=20" target="_blank">'
 						 + 'Dutch \'Locatieserver\'</a>.</p>';
