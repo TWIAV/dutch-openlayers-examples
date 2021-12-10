@@ -1,0 +1,69 @@
+@import "node_modules/ol/ol.css";
+
+body {
+  overflow: hidden;
+}
+html, body {
+  padding: 0;
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  font-family: sans-serif;
+}
+
+#header {	
+	width: 100%;
+    height: 70px;
+    background-color: #1f6b75;
+    color:#FFFFFF;
+    margin: 0;
+}
+#headertext {
+    float: left;
+    font-size: 35px;
+    color: white;
+    line-height: 70px;
+    padding-left: 15px;
+}
+#map {
+    position: absolute;
+    top: 70px;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    padding: 0;
+    margin: 0;
+}
+.ol-popup-closer {
+  text-decoration: none;
+  position: absolute;
+  top: 2px;
+  right: 8px;
+}
+.ol-popup-closer:after {
+  content: "✖";
+}
+.copy-url {
+  top: 65px;
+  left: .5em;
+}
+.ol-instruction-label {
+  position: absolute;
+  bottom: .5em;
+  left: .5em;
+  max-width: 400px;
+  background-color: white;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #cccccc;
+  font-size: .8em;
+}
+a {
+  text-decoration: none;
+}
+#gh-a {
+  float: right;
+  margin-top: 17.5px;
+  padding-right: 15px;
+}
