@@ -1,4 +1,4 @@
-# OpenLayer example: reverse geocoding with the Dutch 'Locatieserver'
+# OpenLayers example: reverse geocoding with the Dutch 'Locatieserver'
 
 Reverse geocoding (i.e. retrieving addresses) with the Dutch 'Locatieserver', example: https://geodata.nationaalgeoregister.nl/locatieserver/revgeo?X=155000&Y=463000&type=adres&distance=20
 

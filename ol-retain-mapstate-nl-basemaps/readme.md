@@ -1,4 +1,4 @@
-# OpenLayer example: retain map state (URL.hash)
+# OpenLayers example: retain map state (URL.hash)
 
 In this demo web mapping application, based on [OpenLayers](https://openlayers.org/), while panning and zooming around on the map, the URL is constantly updated. The current basemap is also stored in there. A button is provided to copy the URL to your clipboard, allowing you to retain the map state.
 
