@@ -81,6 +81,25 @@ html, body {
   top: 65px;
   left: .5em;
 }
+.flex-end {
+  padding: 2px;
+  display: flex;
+  justify-content: flex-end;
+}
+.action-button {
+  padding: 0.6em;
+  border: 1px solid rgba(0,60,136,0.5);
+  border-radius: 12px;
+  text-align: center;
+  background-color: white;
+  color: rgba(0,60,136,0.5);
+  cursor: pointer;
+}
+.action-button:hover,
+.action-button:focus {
+  background: rgba(0,60,136,0.5);
+  color: white;
+}
 .ol-instruction-label {
   position: absolute;
   bottom: .5em;

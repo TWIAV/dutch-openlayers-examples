@@ -13,6 +13,7 @@ import {Attribution, defaults as defaultControls} from 'ol/control';
 import '@fortawesome/fontawesome-free/js/all.js';
 
 let reverseGeocoding = false;
+let addressFound;
 
 // Define reverse geocoding control
 class revGeoControl extends Control {
@@ -60,6 +61,9 @@ class revGeoControl extends Control {
 const container = document.getElementById('popup');
 const content = document.getElementById('popup-content');
 const closer = document.getElementById('popup-closer');
+const copyBtn = document.getElementById('copy-address-button');
+
+copyBtn.addEventListener('click', copyAddressToClipboard);
 
 // Create an overlay to anchor the popup to the map.
 const addressPopup = new Overlay({
@@ -141,12 +145,25 @@ map.on('singleclick', function (evt) {
       if (json.response.numFound === 0) {
         content.innerHTML += '<p><b>Adress:</b><br>No address found at this location</p>';
       } else {
-        content.innerHTML += '<p><b>Adress:</b><br>' + json.response.docs[0].weergavenaam + '</p>';
+		addressFound = json.response.docs[0].weergavenaam;
+        content.innerHTML += '<p><b>Address:</b><br>' + addressFound + '</p>';
       }
       addressPopup.setPosition(coordinates);
     })
   }
 });
+
+function copyAddressToClipboard(text) {
+  const inputc = document.body.appendChild(document.createElement("input"));
+  inputc.value = addressFound;
+  inputc.focus();
+  inputc.select();
+  document.execCommand('copy');
+  if (addressFound.length > 0) {
+    alert("Address copied to clipboard:\n" + inputc.value);
+  }
+  inputc.parentNode.removeChild(inputc);
+}
 
 const instructionDiv = document.createElement('div');
 instructionDiv.className = 'ol-instruction-label';
