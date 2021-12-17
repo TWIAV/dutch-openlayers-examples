@@ -1,0 +1,23 @@
+.parentControl{
+    background-color: white;
+    border-radius: 10px;
+    height: 36px;
+}
+.visible{
+	visibility: visible;
+}
+.invisible{
+	visibility: hidden;
+}
+input{
+    outline: none;
+}
+input[type=text]{
+    border: solid 4px #eee;
+    border-radius: 4px;
+    width: 21.5em;
+    padding-left: .5em;
+}
+input:focus{
+    border: solid 4px #ccc !important;
+}
