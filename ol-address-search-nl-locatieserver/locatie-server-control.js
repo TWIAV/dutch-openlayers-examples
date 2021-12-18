@@ -19,12 +19,6 @@ class LocatieServerControl extends HTMLElement {
         top: 1em;
         right: .5em;
       }
-      @media only screen and (max-width: 1024px) {
-        #locationServerControl{
-          bottom: 3em;
-          left: 0.5em;
-        }
-      }
     `
     _template.innerHTML = `
       <div id="locationServerControl" class="parentControl">
