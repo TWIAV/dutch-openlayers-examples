@@ -97,3 +97,56 @@ a {
   margin-top: 17.5px;
   padding-right: 15px;
 }
+.visible{
+  visibility: visible;
+}
+.invisible{
+  visibility: hidden;
+}
+
+#addressSearchBar{
+  background: transparent;
+  font-size: 15px;
+  display: flex;
+  position: absolute;
+  top: 1em;
+  right: 0;
+  width: 20em;
+  height: 2.2em;
+  border-radius: 4px;
+}
+::-webkit-input-placeholder {
+  color: #ccc;
+  font-size: 15px;
+}
+:-moz-placeholder {
+  color: #ccc;
+  font-size: 15px;
+}
+::-moz-placeholder {
+  color: #ccc;
+  font-size: 15px;
+}
+:-ms-input-placeholder {
+  color: #ccc;
+  font-size: 15px;
+}
+input{
+  font-size: 15px;
+  border: solid 4px #eee;
+  border-radius: 4px;
+  outline: none;
+  width: 18.5em;
+}
+input:focus{
+    border: solid 4px #ddd !important;
+}
+.autocomplete > div.selected {
+    background: rgba(0,60,136,0.2);
+    cursor: pointer;
+}
+.autocomplete > div:hover:not(.group),
+.autocomplete > div.highlighted {
+    background: rgba(0,60,136,0.2);
+    cursor: pointer;
+}

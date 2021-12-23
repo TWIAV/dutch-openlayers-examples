@@ -1,3 +1,4 @@
+import 'autocompleter/autocomplete.css';
 import './style.css';
 import 'ol-layerswitcher/dist/ol-layerswitcher.css';
 
@@ -7,17 +8,36 @@ import LayerGroup from 'ol/layer/Group';
 import TileLayer from 'ol/layer/Tile';
 import WMTSSource from 'ol/source/WMTS';
 import WMTSTileGrid from 'ol/tilegrid/WMTS';
+import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
+import WKT from 'ol/format/WKT';
 import Projection from 'ol/proj/Projection';
 import { getTopLeft } from 'ol/extent';
 import Control from 'ol/control/Control';
 import {Attribution, defaults as defaultControls} from 'ol/control';
+import {Circle as CircleStyle, Stroke, Style} from 'ol/style';
+import * as olExtent from 'ol/extent';
 
 // OpenLayers LayerSwitcher by Matt Walker - https://github.com/walkermatt/ol-layerswitcher
 import LayerSwitcher from 'ol-layerswitcher';
 import { BaseLayerOptions, GroupLayerOptions } from 'ol-layerswitcher';
 
-// the address search bar control
-import LocationServerControl from './locatie-server-control';
+// Blazing fast and lightweight autocomplete library - https://kraaden.github.io/autocomplete/
+import autocomplete from 'autocompleter';
+
+// layer to show address search result
+const addressVectorSource = new VectorSource();
+
+const redLine = new Stroke({
+  color: [255, 0, 0, 0.8],
+  width: 4
+});
+
+const addressVectorLayer = new VectorLayer({
+  source: addressVectorSource,
+  declutter: true,
+  style: [new Style({stroke: redLine}), new Style({image: new CircleStyle({radius: 6, stroke: redLine})})]
+});
 
 // Elements that make up the popup.
 const container = document.getElementById('popup');
@@ -37,6 +57,8 @@ const addressPopup = new Overlay({
 // @return {boolean} Don't follow the href.
 closer.onclick = function () {
   addressPopup.setPosition(undefined);
+  addressVectorSource.clear(); // remove address search result from map
+  document.getElementById('input-loc').value = ''; // clear address search bar
   closer.blur();
   return false;
 };
@@ -131,13 +153,109 @@ const baseMaps = new LayerGroup({
 
 const map = new Map({
   layers: [
-    baseMaps
+    baseMaps,
+    addressVectorLayer
   ],
   controls: defaultControls({attribution: false}).extend([attribution]),
   overlays: [addressPopup],
   target: 'map',
   view: new View({minZoom: 0, maxZoom: 15, projection: proj28992, center: center, zoom: zoom})
 })
+
+// Using the PDOK Location Server --> https://pdok.github.io/webservices-workshop/#using-the-pdok-location-server
+// Adding Custom Control
+
+const locatieServerUrl = 'https://geodata.nationaalgeoregister.nl/locatieserver/v3';
+
+var LocationServerControl = /* @__PURE__ */(function (Control) {
+  function LocationServerControl (optOptions) {
+    var options = optOptions || {};
+    var input = document.createElement('input');
+    input.id = 'input-loc';
+	input.spellcheck = false;
+	input.placeholder = 'Search address (Netherlands only)';
+    var element = document.createElement('div');
+    element.className = 'input-loc ol-unselectable ol-control';
+	element.id = 'addressSearchBar';
+    element.appendChild(input);
+    Control.call(this, {
+      element: element,
+      target: options.target
+    })
+    // suggest - Get Suggestions from Locatie Server
+    autocomplete({
+      input: input,
+      fetch: function (text, update) {
+        fetch(`${locatieServerUrl}/suggest?q=${text}`)
+          .then((response) => {
+            return response.json()
+          })
+          .then((data) => {
+            const suggestions = [];
+            data.response.docs.forEach(function (item) {
+              const name = item.weergavenaam;
+              const id = item.id;
+              suggestions.push({ label: name, value: id });
+            })
+            update(suggestions)
+          })
+      },
+	  // lookup - Get Result from Locatie Server
+	  onSelect: function (item) {
+        input.value = item.label;
+        const id = item.value;
+        fetch(`${locatieServerUrl}/lookup?id=${id}&fl=id,weergavenaam,geometrie_rd`)
+          .then((response) => {
+            return response.json()
+          })
+          .then((data) => {
+            let coord;
+			let padding = [0,0,0,0];
+            const wktLoc = data.response.docs[0].geometrie_rd;
+            const format = new WKT();
+            const feature = format.readFeature(wktLoc);
+			addressVectorSource.clear();
+            addressVectorSource.addFeature(feature);
+            const ext = feature.getGeometry().getExtent();
+			const geomType = feature.getGeometry().getType();
+			console.log(geomType);
+            if (geomType === 'Point') {
+              coord = feature.getGeometry().getCoordinates();
+            } else {
+              coord = olExtent.getCenter(ext);
+			  padding = [60,60,60,60];
+            }
+            const address = data.response.docs[0].weergavenaam;
+            content.innerHTML = '<p>' + address + '</p>';
+            addressPopup.setPosition(coord);
+            map.getView().fit(ext, {size: map.getSize(), padding: padding});
+          })
+      }
+    })
+  }
+  if (Control) LocationServerControl.__proto__ = Control
+  LocationServerControl.prototype = Object.create(Control && Control.prototype)
+  LocationServerControl.prototype.constructor = LocationServerControl
+  return LocationServerControl
+}(Control))
+
+map.addControl(new LocationServerControl())
+
+// The address search bar is sharing the upper right corner of
+// the map with the default OpenLayers rotate button, which is
+// hidden when map rotation = 0. That's why the address search
+// bar gives way to the rotate button when the map is rotated
+
+const lsControl = document.getElementById('addressSearchBar');
+
+map.getView().on('change:rotation', function() {
+  let rotation = map.getView().getRotation();
+  if (rotation === 0) {
+    lsControl.className = 'visible'
+  } else {
+    lsControl.className = 'invisible'
+  }
+});
 
 const layerSwitcher = new LayerSwitcher({
   activationMode: 'click',
@@ -148,37 +266,6 @@ const layerSwitcher = new LayerSwitcher({
 });
 
 map.addControl(layerSwitcher);
-
-function locationSelectedHandler(event) {
-  const coordinates = event.detail.coordinate;
-  content.innerHTML = '<p>' + event.detail.result + '</p>';
-  addressPopup.setPosition(coordinates);
-  map.getView().fit(event.detail.extent, { maxZoom: 18 })
-}
-
-function addLsInput () {
-  let myControl = new Control({ element: lsControl })
-  map.addControl(myControl)
-  lsControl.addEventListener('location-selected', locationSelectedHandler, false)
-}
-
-customElements.define('locatieserver-control', LocationServerControl)
-const lsControl = document.createElement('locatieserver-control')
-
-addLsInput()
-
-// The address search bar is sharing the upper right corner of
-// the map with the default OpenLayers rotate button, which is
-// hidden when map rotation = 0. That's why the address search
-// bar gives way to the rotate button when the map is rotated
-map.getView().on('change:rotation', function() {
-  let rotation = map.getView().getRotation();
-  if (rotation === 0) {
-    lsControl.className = 'visible'
-  } else {
-    lsControl.className = 'invisible'
-  }
-});
 
 const instructionDiv = document.createElement('div');
 instructionDiv.className = 'ol-instruction-label';

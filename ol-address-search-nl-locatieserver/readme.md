@@ -4,9 +4,9 @@ Address search with the Dutch 'Locatieserver', example: https://geodata.nationaa
 
 This demo web mapping application shows how to use the lookup and suggest functionality of the 'Locatieserver' in an [OpenLayers](https://openlayers.org/) application.
 
-The example shown here is strongly based on this [PDOK Locatie Server demo application](https://github.com/arbakker/pdok-js-map-examples/tree/master/openlayers-locatie-server).  
+The example shown here is based the instructions in this [PDOK Webservices Workshop](https://pdok.github.io/webservices-workshop/#using-the-pdok-location-server).  
 
-After tweaking the css, the html and even the js code of the above mentioned example to suit my needs, I came up with the solution for an address search bar which can be seen in this [demo app](https://twiav.nl/nl/openlayers/ol-address-search-nl-locatieserver).
+The solution with an address search bar can be tested in this [demo app](https://twiav.nl/nl/openlayers/ol-address-search-nl-locatieserver).
 
 Want to play around with the code?
 

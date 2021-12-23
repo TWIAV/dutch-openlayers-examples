@@ -10,6 +10,7 @@
     "vite": "^2.6.7"
   },
   "dependencies": {
+    "autocompleter": "^6.1.2",
     "ol": "latest",
     "ol-layerswitcher": "^3.8.3"
   }
