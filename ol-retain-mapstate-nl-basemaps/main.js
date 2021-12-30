@@ -18,6 +18,8 @@ import { BaseLayerOptions, GroupLayerOptions } from 'ol-layerswitcher';
 // Awesome :-)
 import '@fortawesome/fontawesome-free/js/all.js';
 
+import convertToGrayScale from './convert-to-grayscale.js';
+
 // Define copy url control
 class CopyUrlControl extends Control {
 
@@ -111,6 +113,15 @@ const openTopoAchtergrondkaartLayer = new TileLayer({
   })
 });
 
+// add a grayscale layer
+let openTopoAchtergrondkaartGrijsLayer = new TileLayer(openTopoAchtergrondkaartLayer.getProperties());
+
+openTopoAchtergrondkaartGrijsLayer.set('title', 'OpenTopo Achtergrond (grijs)');
+
+openTopoAchtergrondkaartGrijsLayer.on('postrender', function(event) {
+  convertToGrayScale(event.context);
+});
+
 const brtAchtergrondkaartLayer = new TileLayer({
   title: 'BRT Achtergrondkaart',
   type: 'base',
@@ -151,9 +162,9 @@ const luchtfotoActueelOrthoHRRGBLayer = new TileLayer({
 switchBaseMapSetting(baseMapSetting);
 
 const baseMaps = new LayerGroup({
-	title: 'Basemaps',
-	fold: 'open',
-	layers: [luchtfotoActueelOrthoHRRGBLayer, luchtfotoActueelOrtho25cmRGBLayer, brtAchtergrondkaartLayer, openTopoAchtergrondkaartLayer, openTopoLayer]
+  title: 'Basemaps',
+  fold: 'open',
+  layers: [luchtfotoActueelOrthoHRRGBLayer, luchtfotoActueelOrtho25cmRGBLayer, brtAchtergrondkaartLayer, openTopoAchtergrondkaartGrijsLayer, openTopoAchtergrondkaartLayer, openTopoLayer]
 });
 
 const minZoom = 0;
@@ -217,6 +228,8 @@ function updateURLHash() {
     baseMapSetting = 3;
   } else if (luchtfotoActueelOrthoHRRGBLayer.get('visible')) {
     baseMapSetting = 4;
+  } else if (openTopoAchtergrondkaartGrijsLayer.get('visible')) {
+    baseMapSetting = 5;
   } else {
     baseMapSetting = 0;
   }
@@ -267,6 +280,9 @@ function switchBaseMapSetting(bm) {
       break;
     case 4:
       luchtfotoActueelOrthoHRRGBLayer.set('visible', true);
+      break;
+    case 5:
+      openTopoAchtergrondkaartGrijsLayer.set('visible', true);
       break;
   };
 }
