@@ -207,15 +207,15 @@ function updateURLHash() {
     return;
   }
 
-  if (openTopoLayer.values_.visible) {
+  if (openTopoLayer.get('visible')) {
     baseMapSetting = 0;
-  } else if (openTopoAchtergrondkaartLayer.values_.visible) {
+  } else if (openTopoAchtergrondkaartLayer.get('visible')) {
     baseMapSetting = 1;
-  } else if (brtAchtergrondkaartLayer.values_.visible) {
+  } else if (brtAchtergrondkaartLayer.get('visible')) {
     baseMapSetting = 2;
-  } else if (luchtfotoActueelOrtho25cmRGBLayer.values_.visible) {
+  } else if (luchtfotoActueelOrtho25cmRGBLayer.get('visible')) {
     baseMapSetting = 3;
-  } else if (luchtfotoActueelOrthoHRRGBLayer.values_.visible) {
+  } else if (luchtfotoActueelOrthoHRRGBLayer.get('visible')) {
     baseMapSetting = 4;
   } else {
     baseMapSetting = 0;
@@ -254,16 +254,20 @@ window.addEventListener('popstate', function (event) {
 function switchBaseMapSetting(bm) {
   switch(bm) {
     case 0:
-      openTopoLayer.values_.visible = true;
+      openTopoLayer.set('visible', true);
       break;
     case 1:
-      openTopoAchtergrondkaartLayer.values_.visible = true;
+      openTopoAchtergrondkaartLayer.set('visible', true);
+      break;
     case 2:
-      brtAchtergrondkaartLayer.values_.visible = true;
+      brtAchtergrondkaartLayer.set('visible', true);
+      break;
     case 3:
-      luchtfotoActueelOrtho25cmRGBLayer.values_.visible = true;
+      luchtfotoActueelOrtho25cmRGBLayer.set('visible', true);
+      break;
     case 4:
-      luchtfotoActueelOrthoHRRGBLayer.values_.visible = true;
+      luchtfotoActueelOrthoHRRGBLayer.set('visible', true);
+      break;
   };
 }
 
