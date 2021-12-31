@@ -136,7 +136,7 @@ const brtAchtergrondkaartLayer = new TileLayer({
 });
 
 const luchtfotoActueelOrtho25cmRGBLayer = new TileLayer({
-  title: 'Luctfoto (actueel / 25 cm)',
+  title: 'Luchtfoto (actueel / 25 cm)',
   type: 'base',
   visible: false,
   source: new WMTSSource({
@@ -148,7 +148,7 @@ const luchtfotoActueelOrtho25cmRGBLayer = new TileLayer({
 });
 
 const luchtfotoActueelOrthoHRRGBLayer = new TileLayer({
-  title: 'Luctfoto (actueel / 7,5 cm)',
+  title: 'Luchtfoto (actueel / 7,5 cm)',
   type: 'base',
   visible: false,
   source: new WMTSSource({
