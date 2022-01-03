@@ -33,6 +33,7 @@ html, body {
     left: 0;
     padding: 0;
     margin: 0;
+	background: url(data:data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAXCAYAAADk3wSdAAAAwUlEQVQ4je2PO1ICURBFTzcjj4CiMCMyImM9sBIiFmKGCyAlMzBmB0auQUmG37x3CSxGoCgHLROsOVFX172nq+FWsMOQtFkmzO279AWEEmp2Mreymh2GBWH0TAgtGideo2lOwyAS2aZz6Rv5xzjX/HhXSrsM7h/ohcBdKTXcDHT0lkWSvuqRNq/uhv/svd3T7FH94VQvk2s71Rd8lwOIdfF30l9QS2tpLf0PUqlgKyFVZz/JKhMe44r3ImMTr5XeDnuPiTdR9gwqHgAAAABJRU5ErkJggg==) repeat scroll 0 0 #f9f9f9;
 }
 /* https://openlayers.org/en/latest/examples/popup.html */
 .ol-popup {

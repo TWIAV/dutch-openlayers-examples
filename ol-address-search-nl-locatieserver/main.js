@@ -4,15 +4,9 @@ import 'ol-layerswitcher/dist/ol-layerswitcher.css';
 
 import {Map, View} from 'ol';
 import Overlay from 'ol/Overlay';
-import LayerGroup from 'ol/layer/Group';
-import TileLayer from 'ol/layer/Tile';
-import WMTSSource from 'ol/source/WMTS';
-import WMTSTileGrid from 'ol/tilegrid/WMTS';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import WKT from 'ol/format/WKT';
-import Projection from 'ol/proj/Projection';
-import { getTopLeft } from 'ol/extent';
 import Control from 'ol/control/Control';
 import {Attribution, defaults as defaultControls} from 'ol/control';
 import {Circle as CircleStyle, Stroke, Style} from 'ol/style';
@@ -24,6 +18,8 @@ import { BaseLayerOptions, GroupLayerOptions } from 'ol-layerswitcher';
 
 // Blazing fast and lightweight autocomplete library - https://kraaden.github.io/autocomplete/
 import autocomplete from 'autocompleter';
+
+import { baseMaps } from './basemaps.js';
 
 // layer to show address search result
 const addressVectorSource = new VectorSource();
@@ -70,86 +66,12 @@ const attribution = new Attribution({
 let center = [155000, 463000];
 let zoom = 3;
 
-// Tiling schema for the Netherlands (Amersfoort / RD New): EPSG:28992
-const proj28992Extent = [-285401.92, 22598.08, 595401.92, 903401.92];
-const proj28992 = new Projection({ code: 'EPSG:28992', units: 'm', extent: proj28992Extent });
-const resolutions = [3440.640, 1720.320, 860.160, 430.080, 215.040, 107.520, 53.760, 26.880, 13.440, 6.720, 3.360, 1.680, 0.840, 0.420, 0.210];
-const matrixIds = [];
-for (let i = 0; i < 15; ++i) {
-  matrixIds[i] = 'EPSG:28992:' + i;
-}
+const projection = baseMaps.getLayers().item(0).get('source').getProjection();
 
-const dutchWMTSTileGrid = new WMTSTileGrid({
-  origin: getTopLeft(proj28992Extent),
-  resolutions: resolutions,
-  matrixIds: matrixIds
-});
+baseMaps.getLayers().item(4).set('visible', true);
 
-const openTopoLayer = new TileLayer({
-  title: 'OpenTopo',
-  type: 'base',
-  visible: false,
-  source: new WMTSSource({
-    url: 'https://geodata.nationaalgeoregister.nl/tiles/service/wmts',
-    layer: 'opentopo',
-    matrixSet: 'EPSG:28992', projection: proj28992, crossOrigin: 'Anonymous', format: 'image/png', tileGrid: dutchWMTSTileGrid, style: 'default',
-    attributions: 'PDOK: <a href="https://www.pdok.nl/introductie/-/article/opentopo" target="_blank" title="Publieke Dienstverlening Op de Kaart">OpenTopo</a>'
-  })
-});
-
-const openTopoAchtergrondkaartLayer = new TileLayer({
-  title: 'OpenTopo Achtergrondkaart',
-  type: 'base',
-  visible: true,
-  source: new WMTSSource({
-    url: 'https://geodata.nationaalgeoregister.nl/tiles/service/wmts',
-    layer: 'opentopoachtergrondkaart',
-    matrixSet: 'EPSG:28992', projection: proj28992, crossOrigin: 'Anonymous', format: 'image/png', tileGrid: dutchWMTSTileGrid, style: 'default',
-    attributions: 'PDOK: <a href="https://www.pdok.nl/introductie/-/article/opentopo" target="_blank" title="Publieke Dienstverlening Op de Kaart">OpenTopo Achtergrondkaart</a>'
-  })
-});
-
-const brtAchtergrondkaartLayer = new TileLayer({
-  title: 'BRT Achtergrondkaart',
-  type: 'base',
-  visible: false,
-  source: new WMTSSource({
-    url: 'https://service.pdok.nl/brt/achtergrondkaart/wmts/v2_0',
-    layer: 'standaard',
-    matrixSet: 'EPSG:28992', projection: proj28992, crossOrigin: 'Anonymous', format: 'image/png', tileGrid: dutchWMTSTileGrid, style: 'default',
-    attributions: 'PDOK: <a href="https://www.pdok.nl/introductie/-/article/basisregistratie-topografie-achtergrondkaarten-brt-a-" target="_blank" title="Publieke Dienstverlening Op de Kaart">BRT Achtergrondkaart</a>'
-  })
-});
-
-const luchtfotoActueelOrtho25cmRGBLayer = new TileLayer({
-  title: 'Luchtfoto (actueel / 25 cm)',
-  type: 'base',
-  visible: false,
-  source: new WMTSSource({
-    url: 'https://service.pdok.nl/hwh/luchtfotorgb/wmts/v1_0',
-    layer: 'Actueel_ortho25',
-    matrixSet: 'EPSG:28992', projection: proj28992, crossOrigin: 'Anonymous', format: 'image/png', tileGrid: dutchWMTSTileGrid, style: 'default',
-    attributions: 'PDOK: <a href="https://www.pdok.nl/introductie/-/article/luchtfoto-pdok" target="_blank" title="Publieke Dienstverlening Op de Kaart">Luchtfoto (25 cm)</a>'
-  })
-});
-
-const luchtfotoActueelOrthoHRRGBLayer = new TileLayer({
-  title: 'Luchtfoto (actueel / 7,5 cm)',
-  type: 'base',
-  visible: false,
-  source: new WMTSSource({
-    url: 'https://service.pdok.nl/hwh/luchtfotorgb/wmts/v1_0',
-    layer: 'Actueel_orthoHR',
-    matrixSet: 'EPSG:28992', projection: proj28992, crossOrigin: 'Anonymous', format: 'image/png', tileGrid: dutchWMTSTileGrid, style: 'default',
-    attributions: 'PDOK: <a href="https://www.pdok.nl/introductie/-/article/luchtfoto-pdok" target="_blank" title="Publieke Dienstverlening Op de Kaart">Luchtfoto (7,5 cm)</a>'
-  })
-});
-
-const baseMaps = new LayerGroup({
-	title: 'Basemaps',
-	fold: 'open',
-	layers: [luchtfotoActueelOrthoHRRGBLayer, luchtfotoActueelOrtho25cmRGBLayer, brtAchtergrondkaartLayer, openTopoAchtergrondkaartLayer, openTopoLayer]
-});
+const minZoom = 0;
+const maxZoom = 19;
 
 const map = new Map({
   layers: [
@@ -159,7 +81,7 @@ const map = new Map({
   controls: defaultControls({attribution: false}).extend([attribution]),
   overlays: [addressPopup],
   target: 'map',
-  view: new View({minZoom: 0, maxZoom: 15, projection: proj28992, center: center, zoom: zoom})
+  view: new View({minZoom: minZoom, maxZoom: maxZoom, projection: projection, center: center, zoom: zoom})
 })
 
 // Using the PDOK Location Server --> https://pdok.github.io/webservices-workshop/#using-the-pdok-location-server
@@ -218,7 +140,6 @@ var LocationServerControl = /* @__PURE__ */(function (Control) {
             addressVectorSource.addFeature(feature);
             const ext = feature.getGeometry().getExtent();
 			const geomType = feature.getGeometry().getType();
-			console.log(geomType);
             if (geomType === 'Point') {
               coord = feature.getGeometry().getCoordinates();
             } else {
@@ -228,7 +149,7 @@ var LocationServerControl = /* @__PURE__ */(function (Control) {
             const address = data.response.docs[0].weergavenaam;
             content.innerHTML = '<p>' + address + '</p>';
             addressPopup.setPosition(coord);
-            map.getView().fit(ext, {size: map.getSize(), padding: padding});
+            map.getView().fit(ext, {size: map.getSize(), padding: padding, maxZoom: 14});
           })
       }
     })
@@ -266,6 +187,19 @@ const layerSwitcher = new LayerSwitcher({
 });
 
 map.addControl(layerSwitcher);
+
+map.on ('moveend', handleZoomBtnsAndLayerSwitcher);
+
+function handleZoomBtnsAndLayerSwitcher(evt) {
+  const zoomLevel = Math.round(map.getView().getZoom());
+  const zoomInBtn = document.querySelector(".ol-zoom-in");
+  const zoomOutBtn = document.querySelector(".ol-zoom-out");
+  // Gray out zoom buttons at maximum and minimum zoom respectively
+  zoomLevel === maxZoom ? zoomInBtn.style.backgroundColor = "rgba(0,60,136,0.1)" : zoomInBtn.style.backgroundColor = "rgba(0,60,136,0.5)";
+  zoomLevel === minZoom ? zoomOutBtn.style.backgroundColor = "rgba(0,60,136,0.1)" : zoomOutBtn.style.backgroundColor = "rgba(0,60,136,0.5)";
+  // Make sure the layer switcher is rerendered to set the color (gray or black) for layer titles, depending on their visibility at a certain zoomlevel
+  layerSwitcher.renderPanel();
+}
 
 const instructionDiv = document.createElement('div');
 instructionDiv.className = 'ol-instruction-label';
