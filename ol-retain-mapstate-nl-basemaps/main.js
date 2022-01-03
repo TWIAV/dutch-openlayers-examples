@@ -2,12 +2,6 @@ import './style.css';
 import 'ol-layerswitcher/dist/ol-layerswitcher.css';
 
 import {Map, View} from 'ol';
-import LayerGroup from 'ol/layer/Group';
-import TileLayer from 'ol/layer/Tile';
-import WMTSSource from 'ol/source/WMTS';
-import WMTSTileGrid from 'ol/tilegrid/WMTS';
-import Projection from 'ol/proj/Projection';
-import { getTopLeft } from 'ol/extent';
 import Control from 'ol/control/Control';
 import {Attribution, defaults as defaultControls} from 'ol/control';
 
@@ -18,7 +12,7 @@ import { BaseLayerOptions, GroupLayerOptions } from 'ol-layerswitcher';
 // Awesome :-)
 import '@fortawesome/fontawesome-free/js/all.js';
 
-import convertToGrayScale from './convert-to-grayscale.js';
+import { baseMaps } from './basemaps.js';
 
 // Define copy url control
 class CopyUrlControl extends Control {
@@ -59,7 +53,7 @@ const attribution = new Attribution({
 
 let center = [155000, 463000];
 let zoom = 3;
-let baseMapSetting = 0;
+let baseMapSetting = 5;
 
 if (window.location.hash !== '') {
   // try to restore center and zoom-level from the URL
@@ -72,100 +66,11 @@ if (window.location.hash !== '') {
   }
 }
 
-// Tiling schema for the Netherlands (Amersfoort / RD New): EPSG:28992
-const proj28992Extent = [-285401.92, 22598.08, 595401.92, 903401.92];
-const proj28992 = new Projection({ code: 'EPSG:28992', units: 'm', extent: proj28992Extent });
-const resolutions = [3440.640, 1720.320, 860.160, 430.080, 215.040, 107.520, 53.760, 26.880, 13.440, 6.720, 3.360, 1.680, 0.840, 0.420, 0.210, 0.105, 0.0525, 0.02625, 0.013125, 0.0065625];
-const matrixIds = [];
-for (let i = 0; i < 20; ++i) {
-  matrixIds[i] = 'EPSG:28992:' + i;
-}
+const baseLayers = baseMaps.getLayers();
 
-const dutchWMTSTileGrid = new WMTSTileGrid({
-  origin: getTopLeft(proj28992Extent),
-  resolutions: resolutions,
-  matrixIds: matrixIds
-});
-
-const openTopoLayer = new TileLayer({
-  title: 'OpenTopo',
-  type: 'base',
-  minResolution: 0.200,
-  visible: false,
-  source: new WMTSSource({
-    url: 'https://geodata.nationaalgeoregister.nl/tiles/service/wmts',
-    layer: 'opentopo',
-    matrixSet: 'EPSG:28992', projection: proj28992, crossOrigin: 'Anonymous', format: 'image/png', tileGrid: dutchWMTSTileGrid, style: 'default',
-    attributions: 'PDOK: <a href="https://www.pdok.nl/introductie/-/article/opentopo" target="_blank" title="Publieke Dienstverlening Op de Kaart">OpenTopo</a>'
-  })
-});
-
-const openTopoAchtergrondkaartLayer = new TileLayer({
-  title: 'OpenTopo Achtergrondkaart',
-  type: 'base',
-  minResolution: 0.200,
-  visible: false,
-  source: new WMTSSource({
-    url: 'https://geodata.nationaalgeoregister.nl/tiles/service/wmts',
-    layer: 'opentopoachtergrondkaart',
-    matrixSet: 'EPSG:28992', projection: proj28992, crossOrigin: 'Anonymous', format: 'image/png', tileGrid: dutchWMTSTileGrid, style: 'default',
-    attributions: 'PDOK: <a href="https://www.pdok.nl/introductie/-/article/opentopo" target="_blank" title="Publieke Dienstverlening Op de Kaart">OpenTopo Achtergrondkaart</a>'
-  })
-});
-
-// add a grayscale layer
-let openTopoAchtergrondkaartGrijsLayer = new TileLayer(openTopoAchtergrondkaartLayer.getProperties());
-
-openTopoAchtergrondkaartGrijsLayer.set('title', 'OpenTopo Achtergrond (grijs)');
-
-openTopoAchtergrondkaartGrijsLayer.on('postrender', function(event) {
-  convertToGrayScale(event.context);
-});
-
-const brtAchtergrondkaartLayer = new TileLayer({
-  title: 'BRT Achtergrondkaart',
-  type: 'base',
-  minResolution: 0.200,
-  visible: false,
-  source: new WMTSSource({
-    url: 'https://service.pdok.nl/brt/achtergrondkaart/wmts/v2_0',
-    layer: 'standaard',
-    matrixSet: 'EPSG:28992', projection: proj28992, crossOrigin: 'Anonymous', format: 'image/png', tileGrid: dutchWMTSTileGrid, style: 'default',
-    attributions: 'PDOK: <a href="https://www.pdok.nl/introductie/-/article/basisregistratie-topografie-achtergrondkaarten-brt-a-" target="_blank" title="Publieke Dienstverlening Op de Kaart">BRT Achtergrondkaart</a>'
-  })
-});
-
-const luchtfotoActueelOrtho25cmRGBLayer = new TileLayer({
-  title: 'Luchtfoto (actueel / 25 cm)',
-  type: 'base',
-  visible: false,
-  source: new WMTSSource({
-    url: 'https://service.pdok.nl/hwh/luchtfotorgb/wmts/v1_0',
-    layer: 'Actueel_ortho25',
-    matrixSet: 'EPSG:28992', projection: proj28992, crossOrigin: 'Anonymous', format: 'image/png', tileGrid: dutchWMTSTileGrid, style: 'default',
-    attributions: 'PDOK: <a href="https://www.pdok.nl/introductie/-/article/luchtfoto-pdok" target="_blank" title="Publieke Dienstverlening Op de Kaart">Luchtfoto (25 cm)</a>'
-  })
-});
-
-const luchtfotoActueelOrthoHRRGBLayer = new TileLayer({
-  title: 'Luchtfoto (actueel / 7,5 cm)',
-  type: 'base',
-  visible: false,
-  source: new WMTSSource({
-    url: 'https://service.pdok.nl/hwh/luchtfotorgb/wmts/v1_0',
-    layer: 'Actueel_orthoHR',
-    matrixSet: 'EPSG:28992', projection: proj28992, crossOrigin: 'Anonymous', format: 'image/png', tileGrid: dutchWMTSTileGrid, style: 'default',
-    attributions: 'PDOK: <a href="https://www.pdok.nl/introductie/-/article/luchtfoto-pdok" target="_blank" title="Publieke Dienstverlening Op de Kaart">Luchtfoto (7,5 cm)</a>'
-  })
-});
+const projection = baseLayers.item(0).get('source').getProjection();
 
 switchBaseMapSetting(baseMapSetting);
-
-const baseMaps = new LayerGroup({
-  title: 'Basemaps',
-  fold: 'open',
-  layers: [luchtfotoActueelOrthoHRRGBLayer, luchtfotoActueelOrtho25cmRGBLayer, brtAchtergrondkaartLayer, openTopoAchtergrondkaartGrijsLayer, openTopoAchtergrondkaartLayer, openTopoLayer]
-});
 
 const minZoom = 0;
 const maxZoom = 19;
@@ -176,7 +81,7 @@ const map = new Map({
   ],
   controls: defaultControls({attribution: false}).extend([new CopyUrlControl(), attribution]),
   target: 'map',
-  view: new View({minZoom: minZoom, maxZoom: maxZoom, projection: proj28992, center: center, zoom: zoom})
+  view: new View({minZoom: minZoom, maxZoom: maxZoom, projection: projection, center: center, zoom: zoom})
 })
 
 const layerSwitcher = new LayerSwitcher({
@@ -202,11 +107,7 @@ function handleZoomBtnsAndLayerSwitcher(evt) {
   layerSwitcher.renderPanel();
 }
 
-openTopoLayer.on('change:visible', function(){ updateURLHash() });
-openTopoAchtergrondkaartLayer.on('change:visible', function(){ updateURLHash() });
-brtAchtergrondkaartLayer.on('change:visible', function(){ updateURLHash() });
-luchtfotoActueelOrtho25cmRGBLayer.on('change:visible', function(){ updateURLHash() });
-luchtfotoActueelOrthoHRRGBLayer.on('change:visible', function(){ updateURLHash() });
+baseMaps.on('change', function(){ updateURLHash() }); // User selects other basemap
 
 let shouldUpdate = true;
 const view = map.getView();
@@ -217,21 +118,11 @@ function updateURLHash() {
     shouldUpdate = true;
     return;
   }
-
-  if (openTopoLayer.get('visible')) {
-    baseMapSetting = 0;
-  } else if (openTopoAchtergrondkaartLayer.get('visible')) {
-    baseMapSetting = 1;
-  } else if (brtAchtergrondkaartLayer.get('visible')) {
-    baseMapSetting = 2;
-  } else if (luchtfotoActueelOrtho25cmRGBLayer.get('visible')) {
-    baseMapSetting = 3;
-  } else if (luchtfotoActueelOrthoHRRGBLayer.get('visible')) {
-    baseMapSetting = 4;
-  } else if (openTopoAchtergrondkaartGrijsLayer.get('visible')) {
-    baseMapSetting = 5;
-  } else {
-    baseMapSetting = 0;
+  
+  for (let i = 0; i < baseLayers.get('length'); ++i) {
+    if (baseLayers.item(i).get('visible')) {
+      baseMapSetting = i;
+	}
   }
 
   const center = view.getCenter();
@@ -265,26 +156,7 @@ window.addEventListener('popstate', function (event) {
 });
 
 function switchBaseMapSetting(bm) {
-  switch(bm) {
-    case 0:
-      openTopoLayer.set('visible', true);
-      break;
-    case 1:
-      openTopoAchtergrondkaartLayer.set('visible', true);
-      break;
-    case 2:
-      brtAchtergrondkaartLayer.set('visible', true);
-      break;
-    case 3:
-      luchtfotoActueelOrtho25cmRGBLayer.set('visible', true);
-      break;
-    case 4:
-      luchtfotoActueelOrthoHRRGBLayer.set('visible', true);
-      break;
-    case 5:
-      openTopoAchtergrondkaartGrijsLayer.set('visible', true);
-      break;
-  };
+  baseLayers.item(bm).set('visible', true);
 }
 
 const instructionDiv = document.createElement('div');

@@ -1,5 +1,6 @@
 export default {
+  base: '',
   build: {
-    sourcemap: true,
+    sourcemap: false,
   }
 }
