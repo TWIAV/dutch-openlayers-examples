@@ -1,0 +1,17 @@
+{
+  "name": "ol-ogc-wfs-nl",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "vite",
+    "build": "vite build",
+    "serve": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^2.6.7"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.15.4",
+    "ol": "latest",
+    "ol-layerswitcher": "^3.8.3"
+  }
+}
