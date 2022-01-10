@@ -10,11 +10,11 @@ import {Circle as CircleStyle, Fill, Stroke, Style, Text} from 'ol/style';
   // like as likeFilter,
 // } from 'ol/format/filter';
 
-const auUrlWfs = 'https://geodata.nationaalgeoregister.nl/bestuurlijkegrenzen/wfs';
+const auUrlWfs = 'https://service.pdok.nl/kadaster/bestuurlijkegebieden/wfs/v1_0';
 
 // Municipalities
 const auMunicipalitiesSource = new VectorSource({
-  attributions: '<a href="https://www.pdok.nl/introductie/-/article/bestuurlijke-grenzen" target="_blank" title="Publieke Dienstverlening Op de Kaart"> | Gemeenten</a>'
+  attributions: '<a href="https://www.pdok.nl/geo-services/-/article/bestuurlijke-gebieden" target="_blank" title="Publieke Dienstverlening Op de Kaart"> | Gemeenten</a>'
 });
 
 const auMunicipalitiesStyle = new Style({
@@ -30,13 +30,13 @@ const auMunicipalitiesLayer = new VectorLayer({
 
 const auMunicipalitiesFeatureRequest = new WFS({ version: '2.0.0' }).writeGetFeature({
   srsName: 'EPSG:28992',
-  featureTypes: ['bestuurlijkegrenzen:gemeenten'],
+  featureTypes: ['bestuurlijkegebieden:Gemeentegebied'],
   outputFormat: 'application/json'
 });
 
 // Provinces
 const auProvincesSource = new VectorSource({
-  attributions: '<a href="https://www.pdok.nl/introductie/-/article/bestuurlijke-grenzen" target="_blank" title="Publieke Dienstverlening Op de Kaart"> | Provincies</a>'
+  attributions: '<a href="https://www.pdok.nl/geo-services/-/article/bestuurlijke-gebieden" target="_blank" title="Publieke Dienstverlening Op de Kaart"> | Provincies</a>'
 });
 
 const auProvincesStyle = new Style({
@@ -52,7 +52,7 @@ const auProvincesLayer = new VectorLayer({
 
 const auProvincesFeatureRequest = new WFS({ version: '2.0.0' }).writeGetFeature({
   srsName: 'EPSG:28992',
-  featureTypes: ['bestuurlijkegrenzen:provincies'],
+  featureTypes: ['bestuurlijkegebieden:Provinciegebied'],
   outputFormat: 'application/json'
 });
 

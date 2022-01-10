@@ -94,13 +94,13 @@ map.on('pointermove', function(evt){
   map.forEachFeatureAtPixel(evt.pixel, function(feature, layer) {
 	const layerTitle = layer.get('title');
     if (feature &&  layerTitle === 'Provinces') {
-      info += 'Province: <b>' + feature.get('provincienaam') + '</b><br>';
+      info += 'Province: <b>' + feature.get('naam') + '</b><br>';
 	  const prov = feature;
 	  provSelected.push(prov);
 	  feature.setStyle(auProvincesHighlightStyle);
 	}
     if (feature &&  layerTitle === 'Municipalities') {
-      info += 'Municipality: <b>' + feature.get('gemeentenaam') + '</b><br>';
+      info += 'Municipality: <b>' + feature.get('naam') + '</b><br>';
 	  const mun = feature;
 	  munSelected.push(mun);
 	  feature.setStyle(auMunicipalitiesHighlightStyle);
