@@ -1,0 +1,185 @@
+@import "node_modules/ol/ol.css";
+
+body {
+  overflow: hidden;
+}
+html, body {
+  padding: 0;
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  font-family: sans-serif;
+}
+
+#header {	
+	width: 100%;
+    height: 70px;
+    background-color: rgb(76,118,171);
+    color:#FFFFFF;
+    margin: 0;
+}
+#headertext {
+    float: left;
+    font-size: 35px;
+    color: white;
+    line-height: 70px;
+    padding-left: 15px;
+}
+#map {
+    position: absolute;
+    top: 70px;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    padding: 0;
+    margin: 0;
+	background: url(data:data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAXCAYAAADk3wSdAAAAwUlEQVQ4je2PO1ICURBFTzcjj4CiMCMyImM9sBIiFmKGCyAlMzBmB0auQUmG37x3CSxGoCgHLROsOVFX172nq+FWsMOQtFkmzO279AWEEmp2Mreymh2GBWH0TAgtGideo2lOwyAS2aZz6Rv5xzjX/HhXSrsM7h/ohcBdKTXcDHT0lkWSvuqRNq/uhv/svd3T7FH94VQvk2s71Rd8lwOIdfF30l9QS2tpLf0PUqlgKyFVZz/JKhMe44r3ImMTr5XeDnuPiTdR9gwqHgAAAABJRU5ErkJggg==) repeat scroll 0 0 #f9f9f9;
+}
+/* https://openlayers.org/en/latest/examples/popup.html */
+.ol-popup {
+  position: absolute;
+  background-color: white;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+  padding: 15px;
+  border-radius: 10px;
+  border: 1px solid #cccccc;
+  bottom: 12px;
+  left: -50px;
+  min-width: 280px;
+  font-size: .8em;
+}
+.ol-popup:after, .ol-popup:before {
+  top: 100%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+}
+.ol-popup:after {
+  border-top-color: white;
+  border-width: 10px;
+  left: 48px;
+  margin-left: -10px;
+}
+.ol-popup:before {
+  border-top-color: #cccccc;
+  border-width: 11px;
+  left: 48px;
+  margin-left: -11px;
+}
+.ol-popup-closer {
+  text-decoration: none;
+  position: absolute;
+  top: 2px;
+  right: 8px;
+}
+.ol-popup-closer:after {
+  content: "✖";
+}
+a {
+  text-decoration: none;
+}
+#gh-a {
+  float: right;
+  margin-top: 17.5px;
+  padding-right: 15px;
+}
+.visible{
+  visibility: visible;
+}
+.invisible{
+  visibility: hidden;
+}
+.flex-end {
+  padding: 2px;
+  display: flex;
+  justify-content: flex-end;
+}
+.action-button {
+  margin-left:5px;
+  padding: 0.3em;
+  border: none;
+  border-radius: 2px;
+  text-align: center;
+  color: white;
+  background: rgba(0,60,136,0.5);
+  cursor: pointer;
+}
+.action-button:hover,
+.action-button:focus {
+  background-color: white;
+  color: rgba(0,60,136,0.5);
+  border: 1px solid rgba(0,60,136,0.5);
+}
+
+#addressSearchBar{
+  background: transparent;
+  font-size: 15px;
+  display: flex;
+  position: absolute;
+  top: 1em;
+  right: 0;
+  width: 20em;
+  height: 2.2em;
+  border-radius: 4px;
+}
+::-webkit-input-placeholder {
+  color: #ccc;
+  font-size: 15px;
+}
+:-moz-placeholder {
+  color: #ccc;
+  font-size: 15px;
+}
+::-moz-placeholder {
+  color: #ccc;
+  font-size: 15px;
+}
+:-ms-input-placeholder {
+  color: #ccc;
+  font-size: 15px;
+}
+input{
+  font-size: 15px;
+  border: solid 4px #eee;
+  border-radius: 4px;
+  outline: none;
+  width: 18.5em;
+}
+input:focus{
+    border: solid 4px #ddd !important;
+}
+.autocomplete > div.selected {
+    background: rgba(0,60,136,0.2);
+    cursor: pointer;
+}
+.autocomplete > div:hover:not(.group),
+.autocomplete > div.highlighted {
+    background: rgba(0,60,136,0.2);
+    cursor: pointer;
+}
+.tooltip {
+  border: solid .5px;
+  border-color: rgba(200,200,200,1);
+  border-radius: 4px;
+  position: relative;
+  padding: 10px;
+  background: white;
+  color: rgba(0, 0, 0, 0.8);
+  white-space: nowrap;
+  font: 9pt sans-serif;
+}
+.tooltip::before {
+  content: '';
+  position: absolute;
+  display: block;    
+  width: 0px;        
+  left: 0;
+  top: 50%;
+  border: 5px solid transparent;
+  border-left: 0;
+  border-right: 15px solid #fff;
+  transform: translate(calc(-100%), -50%);
+}

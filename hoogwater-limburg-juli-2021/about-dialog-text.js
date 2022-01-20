@@ -1,0 +1,42 @@
+let aboutDialogHeaderTxt = 'Over deze Viewer';
+let aboutDialogBodyTxt1 = 'In de zomer van 2021 is het zuiden van Nederland getroffen door extreme neerslag. Als gevolg hiervan kregen de rivier de Maas, en de haar toevoerende beken, grote hoeveelheden water af te voeren. Deze hoogwatergolf in juli 2021 heeft grote schade veroorzaakt, met name in het Geuldal. De schade wordt voorlopig geschat op 350 tot 600 miljoen Euro. En de maatschappelijke gevolgen van deze overstroming zijn tot op de dag van vandaag voelbaar in Limburg. Daarmee is deze vloedgolf in de zomer veel ingrijpender dan de overstromingen van de Maas in 1993 en 1995, die in de winter plaatsvonden.<br>'
+aboutDialogBodyTxt1 += '<h3>De overstromingen in beeld</h3>';
+aboutDialogBodyTxt1 += 'Deze Viewer toont de luchtfoto\'s van de overstromingen in Limburg, van de Maas, de Geul, de Geleenbeek en de Roer (juli 2021).<br><br>';
+aboutDialogBodyTxt1 += 'Gebruik de <b>swipe button</b> om het hoge water te vergelijkken met de \'normale\' situatie in het voorjaar van 2021: schuif de luchtfoto\'s over elkaar heen om te zien hoe ver de rivier en de beken buiten hun oevers zijn getreden.<br><br>';
+aboutDialogBodyTxt1 += '<button id="start-button" class="start-button">Klik op de kaart om te starten</button>';
+let aboutDialogBodyTxt2 = '<h3>Inwining luchtfoto\'s</h3>';
+aboutDialogBodyTxt2 += '<ul>';
+aboutDialogBodyTxt2 += '<li>Vluchten <b>Maas</b> (16-19 juli 2021)';
+aboutDialogBodyTxt2 += '<ul>';
+aboutDialogBodyTxt2 += '<li>Opdrachtgever <b>Rijkswaterstaat</b> - Uitgevoerd door <b><a href="https://kavel10.nl/" target="blank">Kavel 10</a></b>';
+aboutDialogBodyTxt2 += '<li>in 4 dagen is men met de piek van de hoogwatergolf meegevlogen om een goed beeld te krijgen van de maximale vulling van het rivierbed:</li>';
+aboutDialogBodyTxt2 += '<ul>';
+aboutDialogBodyTxt2 += '<li>vrijdag 16 juli 2021: <b>van Eijsden tot aan Susteren</b></li>';
+aboutDialogBodyTxt2 += '<li>zaterdag 17 juli 2021: <b>van Susteren tot aan Beesel</b></li>';
+aboutDialogBodyTxt2 += '<li>zondag 18 juli 2021: <b>van Beesel tot aan Mook</b></li>';
+aboutDialogBodyTxt2 += '<li>maandag 19 juli 2021: <b>van Mook tot aan Hank</b></li>';
+aboutDialogBodyTxt2 += '</ul>';
+aboutDialogBodyTxt2 += '</ul>';
+aboutDialogBodyTxt2 += '</li>';
+aboutDialogBodyTxt2 += '</li><br>';
+aboutDialogBodyTxt2 += '<li>Vluchten <b>Limburgse beken</b> (16-17 juli 2021)';
+aboutDialogBodyTxt2 += '<ul>';
+aboutDialogBodyTxt2 += '<li>Opdrachtgever <b>Waterschap Limburg</b> - Uitgevoerd door <b><a href="https://www.miramap.com/home" target="blank">Miramap Aerial Surveys</a></b>';
+aboutDialogBodyTxt2 += '<ul>';
+aboutDialogBodyTxt2 += '<li>vrijdag 16 juli 2021 (aan het eind van de middag): <b>de Geul en Geleenbeek</b></li>';
+aboutDialogBodyTxt2 += '<li>zaterdag 17 juli 2021 (in de ochtend): <b>de Roer</b></li>';
+aboutDialogBodyTxt2 += '</ul>';
+aboutDialogBodyTxt2 += '</ul>';
+aboutDialogBodyTxt2 += '</li>';
+aboutDialogBodyTxt2 += '</li>';
+aboutDialogBodyTxt2 += '</ul>';
+aboutDialogBodyTxt2 += '<h3>Achtergrondinformatie</h3>';
+aboutDialogBodyTxt2 += '<ul>';
+aboutDialogBodyTxt2 += '<li>deze <a href="https://storymaps.arcgis.com/stories/7488a4903f47499a9f765a23619eb2f4" target="blank">StoryMap</a> van Het Waterschapshuis met informatie over de inwinning van de luchtfoto\'s</li>';
+aboutDialogBodyTxt2 += '<li>het <a href="https://repository.tudelft.nl/islandora/object/uuid%3A06b03772-ebe0-4949-9c4d-7c1593fb094e" target="blank">rapport <b>Hoogwater 2021: Feiten en Duiding</b></a> van TUDelft</li>';
+aboutDialogBodyTxt2 += '</ul>';
+let aboutDialogFooterTxt = 'Deze kaartviewer is gebouwd met <a href="https://openlayers.org/" title="A high-performance, feature-packed library for all your mapping needs." target="blank">OpenLayers</a> - Heb je <a id="wm" href="#"></a>&nbsp;over deze applicatie? Stuur dan een&nbsp;<a id="wm2" href="#"></a>.';
+
+const aboutDialogTxt = [aboutDialogHeaderTxt, aboutDialogBodyTxt1, aboutDialogBodyTxt2, aboutDialogFooterTxt];
+
+export { aboutDialogTxt };
