@@ -49,15 +49,24 @@ const addressPopup = new Overlay({
   },
 });
 
-// Add a click handler to hide the popup.
-// @return {boolean} Don't follow the href.
-closer.onclick = function () {
+function newSearch() {
   addressPopup.setPosition(undefined);
   addressVectorSource.clear(); // remove address search result from map
   document.getElementById('input-loc').value = ''; // clear address search bar
+  document.getElementById("input-loc").focus();
   closer.blur();
   return false;
 };
+
+function KeyPress(e) {
+  var evtobj = window.event ? event : e
+  if (evtobj.shiftKey && evtobj.which === 38) newSearch()
+}
+
+document.onkeydown = KeyPress;
+
+// Add a click handler to hide the popup.
+closer.onclick = newSearch;
 
 const attribution = new Attribution({
   collapsible: false,
@@ -207,7 +216,8 @@ instructionDiv.id = 'instruction';
 instructionDiv.innerHTML = '<h3>Information</h3><a href="#" id="instructions-closer" class="ol-popup-closer"></a>'
                          + '<p>This demo application shows the implemantation of an address search bar (in the upper right corner of the map).</p>'
                          + '<p>Adresses are searched usint the <a href="https://geodata.nationaalgeoregister.nl/locatieserver/v3/suggest?q=amsterdam" target="_blank">'
-						 + 'Dutch \'Locatieserver\'</a>.</p><p>So, only addresses in the Netherlands will be found.</p>';
+						 + 'Dutch \'Locatieserver\'</a>.</p><p>So, only addresses in the Netherlands will be found.</p>'
+						 + '<p>Quick search tip:<br>Do you have a keyboard at hand? Press Shift + Arrow Up to put focus on the search bar.</p>';
 const instructions = new Control({element: instructionDiv});
 
 map.addControl(instructions);
