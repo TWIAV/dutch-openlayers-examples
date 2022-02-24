@@ -267,13 +267,7 @@ map.on('click', function (e) {
   });
 
   if (selected) {
-    if (selected.get('description') ===  'Benedenwindse Eilanden') {
-      console.log('Beneden');
-      map.getView().fit(selected.getGeometry(), map.getSize());
-    } else if (selected.get('description') ===  'Bovenwindse Eilanden') {
-      console.log('Boven');
-      map.getView().fit(selected.getGeometry(), map.getSize());
-   }
+    map.getView().fit(selected.getGeometry(), map.getSize());
   }
 });
 
