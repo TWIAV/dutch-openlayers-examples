@@ -1,0 +1,65 @@
+@import "node_modules/ol/ol.css";
+
+body {
+  overflow: hidden;
+}
+html, body {
+  padding: 0;
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  font-family: sans-serif;
+}
+
+#header {	
+	width: 100%;
+    height: 70px;
+    background-color: rgb(76,118,171);
+    color:#FFFFFF;
+    margin: 0;
+}
+#headertext {
+    float: left;
+    font-size: 35px;
+    color: white;
+    line-height: 70px;
+    padding-left: 15px;
+}
+#map {
+    position: absolute;
+    top: 70px;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    padding: 0;
+    margin: 0;
+	background: url(data:data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAXCAYAAADk3wSdAAAAwUlEQVQ4je2PO1ICURBFTzcjj4CiMCMyImM9sBIiFmKGCyAlMzBmB0auQUmG37x3CSxGoCgHLROsOVFX172nq+FWsMOQtFkmzO279AWEEmp2Mreymh2GBWH0TAgtGideo2lOwyAS2aZz6Rv5xzjX/HhXSrsM7h/ohcBdKTXcDHT0lkWSvuqRNq/uhv/svd3T7FH94VQvk2s71Rd8lwOIdfF30l9QS2tpLf0PUqlgKyFVZz/JKhMe44r3ImMTr5XeDnuPiTdR9gwqHgAAAABJRU5ErkJggg==) repeat scroll 0 0 #f9f9f9;
+}
+#gh-a {
+  float: right;
+  margin-top: 17.5px;
+  padding-right: 15px;
+}
+.tooltip {
+  border: solid .5px;
+  border-color: rgba(200,200,200,1);
+  border-radius: 4px;
+  position: relative;
+  padding: 10px;
+  background: white;
+  color: rgba(0, 0, 0, 0.8);
+  white-space: nowrap;
+  font: 9pt sans-serif;
+}
+.tooltip::before {
+  content: '';
+  position: absolute;
+  display: block;    
+  width: 0px;        
+  left: 0;
+  top: 50%;
+  border: 5px solid transparent;
+  border-left: 0;
+  border-right: 15px solid #fff;
+  transform: translate(calc(-100%), -50%);
+}
