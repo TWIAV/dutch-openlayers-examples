@@ -95,40 +95,51 @@ for (let i = 0; i < 15; ++i) {
   matrixIds[i] = 'EPSG:28992:' + i;
 }
 
-const openTopoLayer = new TileLayer({
-  title: 'OpenTopo',
+const dutchWMTSTileGrid = new WMTSTileGrid({
+  origin: getTopLeft(proj28992Extent),
+  resolutions: resolutions,
+  matrixIds: matrixIds
+});
+
+const bgtAchtergrondkaartLayer = new TileLayer({
+  title: 'BGT Achtergrondkaart',
   source: new WMTSSource({
-    url: 'https://geodata.nationaalgeoregister.nl/tiles/service/wmts',
-    layer: 'opentopo',
-    matrixSet: 'EPSG:28992',
-    projection: proj28992,
-    crossOrigin: 'Anonymous',
-    format: 'image/png',
-    attributions: 'PDOK: <a href="https://www.pdok.nl/introductie/-/article/opentopo" target="_blank" title="Publieke Dienstverlening Op de Kaart">OpenTopo</a>',
-    tileGrid: new WMTSTileGrid({
-      origin: getTopLeft(proj28992Extent),
-      resolutions: resolutions,
-      matrixIds: matrixIds
-    }),
-    style: 'default'
+    url: 'https://service.pdok.nl/lv/bgt/wmts/v1_0',
+    layer: 'achtergrondvisualisatie',
+    matrixSet: 'EPSG:28992', projection: proj28992, crossOrigin: 'Anonymous', format: 'image/png', tileGrid: dutchWMTSTileGrid, style: 'default',
+    attributions: 'PDOK: <a href="https://www.pdok.nl/geo-services/-/article/basisregistratie-grootschalige-topografie-bgt-" target="_blank" title="Publieke Dienstverlening Op de Kaart">BGT Achtergrondkaart</a>'
   })
 });
 
+const minZoom = 12;
+const maxZoom = 19;
+
 const map = new Map({
   layers: [
-    openTopoLayer
+    bgtAchtergrondkaartLayer
   ],
   controls: defaultControls({attribution: false}).extend([new revGeoControl(), attribution]),
   overlays: [addressPopup],
   target: 'map',
   view: new View({
-    minZoom: 0,
-    maxZoom: 15,
+    minZoom: minZoom,
+    maxZoom: maxZoom,
     projection: proj28992,
     center: [136848, 455809],
-    zoom: 10
+    zoom: 12
   })
 });
+
+map.on ('moveend', handleZoomBtns);
+
+function handleZoomBtns(evt) {
+  const zoomLevel = Math.round(map.getView().getZoom());
+  const zoomInBtn = document.querySelector(".ol-zoom-in");
+  const zoomOutBtn = document.querySelector(".ol-zoom-out");
+  // Gray out zoom buttons at maximum and minimum zoom respectively
+  zoomLevel === maxZoom ? zoomInBtn.style.backgroundColor = "rgba(0,60,136,0.1)" : zoomInBtn.style.backgroundColor = "rgba(0,60,136,0.5)";
+  zoomLevel === minZoom ? zoomOutBtn.style.backgroundColor = "rgba(0,60,136,0.1)" : zoomOutBtn.style.backgroundColor = "rgba(0,60,136,0.5)";
+}
 
 // Add a click handler to the map to render the popup.
 map.on('singleclick', function (evt) {
@@ -139,7 +150,7 @@ map.on('singleclick', function (evt) {
     
     content.innerHTML = '<p><b>Coordinates (RD/EPSG:28992):</b><br>X = ' + rdX + ' / Y = ' + rdY + '</p>';
 
-    fetch('https://geodata.nationaalgeoregister.nl/locatieserver/revgeo?X=' + rdX + '&Y=' + rdY + '&type=adres&distance=20').then(function(response) {
+    fetch('https://geodata.nationaalgeoregister.nl/locatieserver/revgeo?X=' + rdX + '&Y=' + rdY + '&type=adres&distance=40').then(function(response) {
       return response.json();
     }).then(function(json) {
       if (json.response.numFound === 0) {

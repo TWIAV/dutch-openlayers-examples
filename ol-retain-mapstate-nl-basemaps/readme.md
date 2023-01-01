@@ -4,7 +4,7 @@ In this demo web mapping application, based on [OpenLayers](https://openlayers.o
 
 Follow this link to see the demo: <https://twiav.nl/nl/openlayers/ol-retain-mapstate-nl-basemaps>
 
-Or, to zoom in directly to a certain location, in this case the city of Enschede, with a specific baselayer, here the current release of Dutch HR aerial imagery (currently: spring 2021):
+Or, to zoom in directly to a certain location, in this case the city of Enschede, with a specific baselayer, here the current release of Dutch HR aerial imagery:
 <https://twiav.nl/nl/openlayers/ol-retain-mapstate-nl-basemaps/#map=10/257398/471699/0>
 
 Want to play around with the code?

@@ -53,7 +53,7 @@ const attribution = new Attribution({
 
 let center = [155000, 463000];
 let zoom = 3;
-let baseMapSetting = 5;
+let baseMapSetting = 3;
 
 if (window.location.hash !== '') {
   // try to restore center and zoom-level from the URL

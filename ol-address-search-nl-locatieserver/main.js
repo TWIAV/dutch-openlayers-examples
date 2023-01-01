@@ -77,7 +77,7 @@ let zoom = 3;
 
 const projection = baseMaps.getLayers().item(0).get('source').getProjection();
 
-baseMaps.getLayers().item(4).set('visible', true);
+baseMaps.getLayers().item(3).set('visible', true);
 
 const minZoom = 0;
 const maxZoom = 19;

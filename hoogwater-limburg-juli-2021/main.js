@@ -44,6 +44,7 @@ import { aboutDialogTxt } from './about-dialog-text.js';
 createAboutDialog(aboutDialogTxt[0], aboutDialogTxt[1], aboutDialogTxt[2], aboutDialogTxt[3]);
 
 const aboutDialog = document.getElementById('aboutDialog');
+aboutDialog.style.display = "none";    
 
 const mapLayerGroup = new LayerGroup({
   title: 'Kaartlagen',
@@ -197,7 +198,7 @@ const attribution = new Attribution({
 
 let center = [183565, 368613];
 let zoom = 4;
-let baseMapSetting = 4;
+let baseMapSetting = 3;
 
 if (window.location.hash !== '') {
   // try to restore center and zoom-level from the URL
@@ -272,7 +273,7 @@ baseMapLayerGroup.on('change', function(){ updateURLHash() }); // User selects o
 // const swipeLayerGroup = mapLayerGroup.getLayers().item(1);
 const swipeLayer = swipeLayerGroup.getLayers().item(0);
 
-var swipe = new Swipe({position: 0.68});
+var swipe = new Swipe({position: 0.50});
 map.addControl(swipe);
 swipe.addLayer(swipeLayer, true);
 

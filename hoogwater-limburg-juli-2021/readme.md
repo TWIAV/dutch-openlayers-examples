@@ -5,7 +5,7 @@ In deze demo web mapping applicatie, gebouwd met [OpenLayers](https://openlayers
 Volg deze link om de demo kaartviewer te zien: <https://twiav.nl/nl/water/hoogwater-limburg-juli-2021>
 
 Of zoom direct naar een bepaalde locatie, zoals hier de overstroomde Maas ter hoogte van de pont tussen Grubbenvorst en Velden:
-<https://twiav.nl/nl/water/hoogwater-limburg-juli-2021/#map=11/208871/381480/4>
+<https://twiav.nl/nl/water/hoogwater-limburg-juli-2021/#map=11/208871/381480/3>
 
 Wil je zelf met de code spelen?
 

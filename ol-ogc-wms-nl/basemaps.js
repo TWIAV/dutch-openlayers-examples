@@ -22,41 +22,6 @@ const dutchWMTSTileGrid = new WMTSTileGrid({
   matrixIds: matrixIds
 });
 
-const openTopoLayer = new TileLayer({
-  title: 'OpenTopo',
-  type: 'base',
-  minResolution: 0.200,
-  visible: false,
-  source: new WMTSSource({
-    url: 'https://geodata.nationaalgeoregister.nl/tiles/service/wmts',
-    layer: 'opentopo',
-    matrixSet: 'EPSG:28992', projection: proj28992, crossOrigin: 'Anonymous', format: 'image/png', tileGrid: dutchWMTSTileGrid, style: 'default',
-    attributions: 'PDOK: <a href="https://www.pdok.nl/introductie/-/article/opentopo" target="_blank" title="Publieke Dienstverlening Op de Kaart">OpenTopo</a>'
-  })
-});
-
-const openTopoAchtergrondkaartLayer = new TileLayer({
-  title: 'OpenTopo Achtergrondkaart',
-  type: 'base',
-  minResolution: 0.200,
-  visible: false,
-  source: new WMTSSource({
-    url: 'https://geodata.nationaalgeoregister.nl/tiles/service/wmts',
-    layer: 'opentopoachtergrondkaart',
-    matrixSet: 'EPSG:28992', projection: proj28992, crossOrigin: 'Anonymous', format: 'image/png', tileGrid: dutchWMTSTileGrid, style: 'default',
-    attributions: 'PDOK: <a href="https://www.pdok.nl/introductie/-/article/opentopo" target="_blank" title="Publieke Dienstverlening Op de Kaart">OpenTopo Achtergrondkaart</a>'
-  })
-});
-
-// add a grayscale layer
-let openTopoAchtergrondkaartGrijsLayer = new TileLayer(openTopoAchtergrondkaartLayer.getProperties());
-
-openTopoAchtergrondkaartGrijsLayer.set('title', 'OpenTopo Achtergrond (grijs)');
-
-openTopoAchtergrondkaartGrijsLayer.on('postrender', function(event) {
-  convertToGrayScale(event.context);
-});
-
 const brtAchtergrondkaartLayer = new TileLayer({
   title: 'BRT Achtergrondkaart',
   type: 'base',
@@ -68,6 +33,15 @@ const brtAchtergrondkaartLayer = new TileLayer({
     matrixSet: 'EPSG:28992', projection: proj28992, crossOrigin: 'Anonymous', format: 'image/png', tileGrid: dutchWMTSTileGrid, style: 'default',
     attributions: 'PDOK: <a href="https://www.pdok.nl/introductie/-/article/basisregistratie-topografie-achtergrondkaarten-brt-a-" target="_blank" title="Publieke Dienstverlening Op de Kaart">BRT Achtergrondkaart</a>'
   })
+});
+
+// add a grayscale layer
+let brtAchtergrondkaartGrijsLayer = new TileLayer(brtAchtergrondkaartLayer.getProperties());
+
+brtAchtergrondkaartGrijsLayer.set('title', 'BRT Achtergrondkaart (grijs)');
+
+brtAchtergrondkaartGrijsLayer.on('postrender', function(event) {
+  convertToGrayScale(event.context);
 });
 
 const luchtfotoActueelOrtho25cmRGBLayer = new TileLayer({
@@ -97,7 +71,7 @@ const luchtfotoActueelOrthoHRRGBLayer = new TileLayer({
 const baseMaps = new LayerGroup({
   title: 'Basemaps',
   fold: 'open',
-  layers: [luchtfotoActueelOrthoHRRGBLayer, luchtfotoActueelOrtho25cmRGBLayer, brtAchtergrondkaartLayer, openTopoAchtergrondkaartGrijsLayer, openTopoAchtergrondkaartLayer, openTopoLayer]
+  layers: [luchtfotoActueelOrthoHRRGBLayer, luchtfotoActueelOrtho25cmRGBLayer, brtAchtergrondkaartGrijsLayer, brtAchtergrondkaartLayer]
 });
 
 export { baseMaps };
