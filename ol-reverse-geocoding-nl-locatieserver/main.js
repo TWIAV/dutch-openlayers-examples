@@ -37,10 +37,10 @@ class revGeoControl extends Control {
       target: options.target,
     });
 
-    button.addEventListener('click', this.handleCopyUrl.bind(this), false);
+    button.addEventListener('click', this.handleReverseGeocoding.bind(this), false);
   }
 
-  handleCopyUrl() {
+  handleReverseGeocoding() {
 	const button = document.getElementById('revGeoButton');
     if (reverseGeocoding) {
       button.style.color = 'white';
@@ -150,7 +150,7 @@ map.on('singleclick', function (evt) {
     
     content.innerHTML = '<p><b>Coordinates (RD/EPSG:28992):</b><br>X = ' + rdX + ' / Y = ' + rdY + '</p>';
 
-    fetch('https://geodata.nationaalgeoregister.nl/locatieserver/revgeo?X=' + rdX + '&Y=' + rdY + '&type=adres&distance=40').then(function(response) {
+    fetch('https://api.pdok.nl/bzk/locatieserver/search/v3_1/reverse?X=' + rdX + '&Y=' + rdY + '&type=adres&distance=40').then(function(response) {
       return response.json();
     }).then(function(json) {
       if (json.response.numFound === 0) {
@@ -185,7 +185,7 @@ instructionDiv.innerHTML = '<h3>Instructions</h3><a href="#" id="instructions-cl
                          + '<p>Once activated <button style="background-color:white;border:white">'
                          + '<i class=\'fas fas fa-flag-checkered\' style="color:rgba(0,60,136,0.5)"></i></button> the cursor will change into a crosshair,'
 						 + ' allowing you to click the map to get an address.</p>'
-						 + '<p>Adresses are retrieved usint the <a href="https://geodata.nationaalgeoregister.nl/locatieserver/revgeo?X=155000&Y=463000&type=adres&distance=20" target="_blank">'
+						 + '<p>Adresses are retrieved usint the <a href="https://api.pdok.nl/bzk/locatieserver/search/v3_1/reverse?X=155000&Y=463000&type=adres&distance=20" target="_blank">'
 						 + 'Dutch \'Locatieserver\'</a>.</p>';
 
 const instructions = new Control({element: instructionDiv});
