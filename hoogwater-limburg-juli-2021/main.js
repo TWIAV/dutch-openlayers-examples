@@ -285,7 +285,7 @@ mapLayerGroup.on('change', function() {
 // Using the PDOK Location Server --> https://pdok.github.io/webservices-workshop/#using-the-pdok-location-server
 // Adding Custom Control
 
-const locatieServerUrl = 'https://geodata.nationaalgeoregister.nl/locatieserver/v3';
+const locatieServerUrl = 'https://api.pdok.nl/bzk/locatieserver/search/v3_1';
 
 var LocationServerControl = /* @__PURE__ */(function (Control) {
   function LocationServerControl (optOptions) {
