@@ -89,7 +89,7 @@ map.on('pointermove', function (evt) {
       evt.coordinate,
       viewResolution,
       projection,
-      {'INFO_FORMAT': 'application/json; subtype=geojson'}
+      {'INFO_FORMAT': 'application/json'}
     );
     if (url) {
       fetch(url)

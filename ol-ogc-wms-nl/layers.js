@@ -5,7 +5,7 @@ import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import LayerGroup from 'ol/layer/Group';
 
-const kadUrlWms = 'https://geodata.nationaalgeoregister.nl/kadastralekaart/wms/v4_0';
+const kadUrlWms = 'https://service.pdok.nl/kadaster/kadastralekaart/wms/v5_0';
 
 // Parcels
 const kadParcelsSource = new TileWMS({
@@ -13,7 +13,7 @@ const kadParcelsSource = new TileWMS({
   params: {'LAYERS': 'Perceel', 'TILED': true},
   serverType: 'geoserver',
   crossOrigin: 'anonymous',
-  attributions: '<a href="https://www.pdok.nl/introductie/-/article/basisregistratie-kadaster-brk-" target="_blank" title="Publieke Dienstverlening Op de Kaart"> | Percelen</a>'
+  attributions: '<a href="https://www.pdok.nl/introductie/-/article/kadastrale-kaart" target="_blank" title="Publieke Dienstverlening Op de Kaart"> | Percelen</a>'
 });
 
 const kadParcelsLayer = new TileLayer({
