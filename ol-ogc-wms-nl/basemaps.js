@@ -52,7 +52,7 @@ const luchtfotoActueelOrtho25cmRGBLayer = new TileLayer({
     url: 'https://service.pdok.nl/hwh/luchtfotorgb/wmts/v1_0',
     layer: 'Actueel_ortho25',
     matrixSet: 'EPSG:28992', projection: proj28992, crossOrigin: 'Anonymous', format: 'image/png', tileGrid: dutchWMTSTileGrid, style: 'default',
-    attributions: 'PDOK: <a href="https://www.pdok.nl/introductie/-/article/luchtfoto-pdok" target="_blank" title="Publieke Dienstverlening Op de Kaart">Luchtfoto (25 cm)</a>'
+    attributions: 'PDOK: <a href="https://www.pdok.nl/introductie/-/article/pdok-luchtfoto-rgb-open-" target="_blank" title="Publieke Dienstverlening Op de Kaart">Luchtfoto (25 cm)</a>'
   })
 });
 
@@ -64,7 +64,7 @@ const luchtfotoActueelOrthoHRRGBLayer = new TileLayer({
     url: 'https://service.pdok.nl/hwh/luchtfotorgb/wmts/v1_0',
     layer: 'Actueel_orthoHR',
     matrixSet: 'EPSG:28992', projection: proj28992, crossOrigin: 'Anonymous', format: 'image/png', tileGrid: dutchWMTSTileGrid, style: 'default',
-    attributions: 'PDOK: <a href="https://www.pdok.nl/introductie/-/article/luchtfoto-pdok" target="_blank" title="Publieke Dienstverlening Op de Kaart">Luchtfoto (7,5 cm)</a>'
+    attributions: 'PDOK: <a href="https://www.pdok.nl/introductie/-/article/pdok-luchtfoto-rgb-open-" target="_blank" title="Publieke Dienstverlening Op de Kaart">Luchtfoto (7,5 cm)</a>'
   })
 });
 
