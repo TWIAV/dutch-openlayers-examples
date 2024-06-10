@@ -475,7 +475,7 @@ map.on('singleclick', function (evt) {
     
     content.innerHTML = '<p><b>RD-coördinaten (EPSG:28992):</b><br>' + coordinatesClicked + '</p>';
 
-    fetch('https://geodata.nationaalgeoregister.nl/locatieserver/revgeo?X=' + rdX + '&Y=' + rdY + '&type=adres&distance=20').then(function(response) {
+    fetch('https://api.pdok.nl/bzk/locatieserver/search/v3_1/reverse?X=' + rdX + '&Y=' + rdY + '&type=adres&distance=20').then(function(response) {
       return response.json();
     }).then(function(json) {
       if (json.response.numFound === 0) {
@@ -527,12 +527,14 @@ map.on('click', function (evt) {
       evt.coordinate,
       viewResolution,
       projection,
-      {'INFO_FORMAT': 'application/json; subtype=geojson'}
+      {'INFO_FORMAT': 'application/json'}
     );
     if (url) {
+        console.log(url);
       fetch(url)
         .then((response) => response.text())
         .then(function (json) {
+            console.log(json);
           const features = new GeoJSON().readFeatures(json);
           selectedParcelSource.clear();
           selectedParcelSource.addFeatures(features);

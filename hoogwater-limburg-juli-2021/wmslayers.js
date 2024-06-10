@@ -5,7 +5,7 @@ import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import LayerGroup from 'ol/layer/Group';
 
-const kadUrlWms = 'https://geodata.nationaalgeoregister.nl/kadastralekaart/wms/v4_0';
+const kadUrlWms = 'https://service.pdok.nl/kadaster/kadastralekaart/wms/v5_0';
 
 // Parcels
 const kadParcelsSource = new TileWMS({
