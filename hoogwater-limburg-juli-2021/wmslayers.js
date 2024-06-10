@@ -13,7 +13,7 @@ const kadParcelsSource = new TileWMS({
   params: {'LAYERS': 'Perceel', 'TILED': true},
   serverType: 'geoserver',
   crossOrigin: 'anonymous',
-  attributions: '<a href="https://www.pdok.nl/introductie/-/article/basisregistratie-kadaster-brk-" target="_blank" title="Publieke Dienstverlening Op de Kaart"> | Percelen</a>'
+  attributions: '<a href="https://www.pdok.nl/introductie/-/article/kadastrale-kaart" target="_blank" title="Publieke Dienstverlening Op de Kaart"> | Percelen</a>'
 });
 
 const kadParcelsLayer = new TileLayer({
