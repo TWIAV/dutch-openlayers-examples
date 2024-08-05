@@ -7,10 +7,10 @@
     "serve": "vite preview"
   },
   "devDependencies": {
-    "vite": "^2.6.7"
+    "vite": "^5.3.5"
   },
   "dependencies": {
-    "autocompleter": "^6.1.2",
+    "autocompleter": "^9.3.0",
     "ol": "latest",
     "ol-layerswitcher": "^3.8.3"
   }

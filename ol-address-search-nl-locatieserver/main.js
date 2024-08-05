@@ -98,18 +98,21 @@ const map = new Map({
 
 const locatieServerUrl = 'https://api.pdok.nl/bzk/locatieserver/search/v3_1';
 
-var LocationServerControl = /* @__PURE__ */(function (Control) {
-  function LocationServerControl (optOptions) {
-    var options = optOptions || {};
-    var input = document.createElement('input');
+//*********************************************************************************************
+class LocationServerControl extends Control {
+
+  constructor(opt_options) {
+    const options = opt_options || {};
+
+    const input = document.createElement('input');
     input.id = 'input-loc';
-	input.spellcheck = false;
-	input.placeholder = 'Search address (Netherlands only)';
-    var element = document.createElement('div');
+    input.spellcheck = false;
+    input.placeholder = 'Search address (Netherlands only)';
+    const element = document.createElement('div');
     element.className = 'input-loc ol-unselectable ol-control';
-	element.id = 'addressSearchBar';
+    element.id = 'addressSearchBar';
     element.appendChild(input);
-    Control.call(this, {
+    super({
       element: element,
       target: options.target
     })
@@ -131,8 +134,8 @@ var LocationServerControl = /* @__PURE__ */(function (Control) {
             update(suggestions)
           })
       },
-	  // lookup - Get Result from Locatie Server
-	  onSelect: function (item) {
+      // lookup - Get Result from Locatie Server
+      onSelect: function (item) {
         input.value = item.label;
         const id = item.value;
         fetch(`${locatieServerUrl}/lookup?id=${id}&fl=id,weergavenaam,geometrie_rd`)
@@ -141,19 +144,19 @@ var LocationServerControl = /* @__PURE__ */(function (Control) {
           })
           .then((data) => {
             let coord;
-			let padding = [0,0,0,0];
+            let padding = [0,0,0,0];
             const wktLoc = data.response.docs[0].geometrie_rd;
             const format = new WKT();
             const feature = format.readFeature(wktLoc);
-			addressVectorSource.clear();
+            addressVectorSource.clear();
             addressVectorSource.addFeature(feature);
             const ext = feature.getGeometry().getExtent();
-			const geomType = feature.getGeometry().getType();
+            const geomType = feature.getGeometry().getType();
             if (geomType === 'Point') {
               coord = feature.getGeometry().getCoordinates();
             } else {
               coord = olExtent.getCenter(ext);
-			  padding = [60,60,60,60];
+              padding = [60,60,60,60];
             }
             const address = data.response.docs[0].weergavenaam;
             content.innerHTML = '<p>' + address + '</p>';
@@ -163,11 +166,9 @@ var LocationServerControl = /* @__PURE__ */(function (Control) {
       }
     })
   }
-  if (Control) LocationServerControl.__proto__ = Control
-  LocationServerControl.prototype = Object.create(Control && Control.prototype)
-  LocationServerControl.prototype.constructor = LocationServerControl
-  return LocationServerControl
-}(Control))
+}
+//*********************************************************************************************
+
 
 map.addControl(new LocationServerControl())
 
